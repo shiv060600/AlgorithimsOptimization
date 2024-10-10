@@ -1,0 +1,22 @@
+syms x
+h = [0.0001,0.001,0.01,0.1];
+x0 = 2;
+f = @(x)(-2 + x*(7+x*(-5+x*(1))));
+f_prime = diff(f,x);
+real_val = subs(f_prime,x,2);
+forward_error = zeros(1,length(h));
+centered_error = zeros(1,length(h));
+for i = 1:length(h)
+    forward_error(i) = (forward_diff(f,x0,h(i))) - real_val;
+    centered_error(i) = (centered_diff(f,x0,h(i))) - real_val;
+end
+
+title("Finite difference error vs stepsize h")
+hold on
+loglog(h,forward_error,'r.')
+loglog(h,centered_error,'g.')
+hold off
+legend("forward diff","mid diff")
+
+
+
